@@ -39,7 +39,7 @@ const BlogForm = ({ handleSubmit, handleBlogFieldChange,
         </div>
     )
 
-BlogForm.PropTypes = {
+BlogForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     handleBlogFieldChange: PropTypes.func.isRequired,
     newTitle: PropTypes.string.isRequired,

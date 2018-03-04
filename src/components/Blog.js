@@ -18,7 +18,10 @@ class Blog extends React.Component {
     const showWhenFull = { display: this.state.full ? '' : 'none' }
     const blog = this.props.blog
     const hideWhenOtherAdder =
-      { display: blog.user._id === this.props.user._id ? '' : 'none'}
+      {
+        display: blog.user !== null &&
+          blog.user._id === this.props.user._id ? '' : 'none'
+      }
 
     const blogStyle = {
       paddingTop: 10,
@@ -28,17 +31,23 @@ class Blog extends React.Component {
       marginBottom: 5
     }
 
+    const adder = blog.user !== null ? blog.user.name : null
+
     return (
       <div>
-        <div onClick={this.toggleFull} style={hideWhenFull}>
+        <div onClick={this.toggleFull} style={hideWhenFull}
+          className="succint">
           {blog.title} {blog.author}
         </div>
-        <div onClick={this.toggleFull} style={showWhenFull}>
+        <div onClick={this.toggleFull} style={showWhenFull}
+          className="full">
           <p>{blog.title} {blog.author}</p>
           <p><a href={blog.url}>{blog.url}</a></p>
           <p>{blog.likes} likes<button
-            onClick={this.props.handleLike}>like</button></p>
-          {<p>added by {blog.user.name}</p>}
+            onClick={this.props.handleLike} className="LikeButton">
+              like
+            </button></p>
+          {<p>added by {adder}</p>}
           <p style={hideWhenOtherAdder}>
             <button onClick={this.props.deleteBlog}>
               delete
@@ -50,7 +59,7 @@ class Blog extends React.Component {
   }
 }
 
-Blog.PropTypes = {
+Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   deleteBlog: PropTypes.func.isRequired,

@@ -33,6 +33,10 @@ class App extends React.Component {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
       blogService.setToken(user.token)
+
+      console.log(user.name)
+    } else {
+      console.log(window.localStorage.getItem('loggedBlogListUser'))
     }
   }
 
