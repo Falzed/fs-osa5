@@ -181,7 +181,8 @@ class App extends React.Component {
           .map(blog =>
             <Blog key={blog._id} blog={blog}
               handleLike={this.handleLike(blog._id)}
-              deleteBlog={this.deleteBlog(blog._id)} />
+              deleteBlog={this.deleteBlog(blog._id)}
+              user = {this.state.user} />
           )}
       </div>
     )

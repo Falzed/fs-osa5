@@ -16,6 +16,8 @@ class Blog extends React.Component {
     const hideWhenFull = { display: this.state.full ? 'none' : '' }
     const showWhenFull = { display: this.state.full ? '' : 'none' }
     const blog = this.props.blog
+    const hideWhenOtherAdder =
+      { display: blog.user._id === this.props.user._id ? '' : 'none'}
 
     const blogStyle = {
       paddingTop: 10,
@@ -36,7 +38,7 @@ class Blog extends React.Component {
           <p>{blog.likes} likes<button
             onClick={this.props.handleLike}>like</button></p>
           {<p>added by {blog.user.name}</p>}
-          <p>
+          <p style={hideWhenOtherAdder}>
             <button onClick={this.props.deleteBlog}>
               delete
              </button>
