@@ -31,11 +31,6 @@ describe('<App />', () => {
             app = mount(<App />)
         })
         it('renders all blogs', () => {
-            /* const user = {
-                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9lbWt1bG1hIiwiaWQiOiI1YTliZmU3NWFjNGY0MzMxODQ3ODVlNWYiLCJpYXQiOjE1MjAxNzI2Njh9.v5b6GtkysiRosqKlF2BFZVHqmy-PPkYC-P04o8GZ_n0',
-                username: 'oemkulma',
-                name: 'Oskari Kulmala'
-            }  */
     
             app.update()
             console.log(app.debug())
