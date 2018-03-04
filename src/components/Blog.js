@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Blog extends React.Component {
 
@@ -47,5 +48,12 @@ class Blog extends React.Component {
       </div>
     )
   }
+}
+
+Blog.PropTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired
 }
 export default Blog
