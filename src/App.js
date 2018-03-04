@@ -6,6 +6,7 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
@@ -95,6 +96,56 @@ class App extends React.Component {
       })
   }
 
+  handleLike = (id) => {
+    return () => {
+      const oldBlog = this.state.blogs.find(blog => blog._id === id)
+      const likedBlog = { ...oldBlog, likes: oldBlog.likes + 1 }
+      console.log(id)
+      console.log(likedBlog)
+      blogService.update(id, likedBlog)
+        .then(likedBlog => {
+          this.setState({
+            blogs: this.state.blogs
+              .map(blog => blog._id !== id ? blog : likedBlog),
+            message: `Liked ${likedBlog.title}`
+          })
+        })
+        .catch(error => {
+          console.log(error)
+          this.setState({ message: 'error in liking blog' })
+        })
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
+    }
+  }
+
+  deleteBlog = (id) => {
+    return () => {
+      console.log(`delete`)
+      const blogToDelete = this.state.blogs.find(blog => blog._id === id)
+      const confirmed = window.confirm(`Remove ${blogToDelete.title}?`)
+      if (!confirmed) { return }
+      blogService
+        .remove(id)
+        .then(response => {
+          this.setState({
+            blogs: this.state.blogs.filter(blog => blog._id !== id),
+            message: `${blogToDelete.title} removed`
+          })
+        })
+        .catch(error => {
+          this.setState({
+            message: `Error in deleting 
+        ${blogToDelete.title}`
+          })
+        })
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
+    }
+  }
+
   render() {
 
     const loginForm = () => (
@@ -110,13 +161,13 @@ class App extends React.Component {
     )
 
     const blogForm = () => (
-      <Togglable buttonLabel="create" 
-      ref={component => this.blogForm = component}>
+      <Togglable buttonLabel="create"
+        ref={component => this.blogForm = component}>
         <BlogForm
           visible={this.state.visible}
           newTitle={this.state.newTitle}
           newAuthor={this.state.newAuthor}
-          newUrl = {this.state.newUrl}
+          newUrl={this.state.newUrl}
           handleBlogFieldChange={this.handleBlogFieldChange}
           handleSubmit={this.addBlog}
         />
@@ -125,9 +176,13 @@ class App extends React.Component {
 
     const blogiListaus = () => (
       <div>
-        {this.state.blogs.map(blog =>
-          <Blog key={blog._id} blog={blog} />
-        )}
+        {this.state.blogs
+          .sort((firstBlog, secondBlog) => secondBlog.likes - firstBlog.likes)
+          .map(blog =>
+            <Blog key={blog._id} blog={blog}
+              handleLike={this.handleLike(blog._id)}
+              deleteBlog={this.deleteBlog(blog._id)} />
+          )}
       </div>
     )
 
